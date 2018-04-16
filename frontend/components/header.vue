@@ -3,7 +3,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header pull-left">
-                    <a class="navbar-brand" v-link="'/'">weiqi.gs</a>
+                    <a class="navbar-brand" v-link="'/'">Tea House</a>
 
                     <a href="javascript:void(0)" @click="toggle_sidebar()" class="sidebar-toggle">
                         <span class="divider"></span>

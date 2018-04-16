@@ -1,5 +1,5 @@
 <template>
-    <h1>weiqi.gs</h1>
+    <h1>Tea House</h1>
 
     <div class="row">
         <div class="col-sm-4 col-sm-push-8">

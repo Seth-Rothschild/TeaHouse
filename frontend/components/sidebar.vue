@@ -166,18 +166,12 @@
 
         <ul class="list-inline list-unstyled text-center">
             <li>
-                <a href="http://blog.weiqi.gs" target="_blank"><i class="fa fa-rss"></i></a>
-            </li>
-            <li>
-                <a href="https://gitlab.com/mibitzi/weiqi.gs" target="_blank"><i class="fa fa-gitlab"></i></a>
-            </li>
-            <li>
-                <a href="https://www.facebook.com/weiqi.gs" target="_blank"><i class="fa fa-facebook"></i></a>
+                <a href="https://github.com/Seth-Rothschild/TeaHouse" target="_blank"><i class="fa fa-github"></i></a>
             </li>
         </ul>
 
         <p class="text-center">
-            <small>&copy; Copyright 2016 weiqi.gs</small>
+            <small>&copy; Copyright 2018 Seth Rothschild</small>
             <br><br>
         </p>
     </aside>

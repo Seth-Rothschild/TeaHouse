@@ -5,7 +5,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">
                         {{(stage=='sign_in' ? $t('sign_in.header') :
-                            (stage=='sign_up' ? $t('sign_up.header') : $t('forgot_password.header')))}}
+                            ))}}
                     </h4>
                 </div>
 
@@ -34,21 +34,6 @@
                             </button>
 
                             <br/>
-
-                            <p class="text-center">
-                                <a href="javascript:void(0)" @click="stage='forgot_password'">
-                                    {{$t('sign_in.forgot')}}
-                                </a>
-                            </p>
-
-                            <div class="signup-or-separator">
-                                <h6 class="text">{{$t('sign_in.or')}}</h6>
-                                <hr>
-                            </div>
-
-                            <button type="button" class="btn btn-lg  btn-block btn-info" @click="stage='sign_up'">
-                                {{$t('sign_in.new_account')}}
-                            </button>
                         </form>
                     </template>
 

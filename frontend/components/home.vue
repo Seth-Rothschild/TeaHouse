@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-sm-8 col-sm-pull-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default" v-if="user.logged_in">
                 <div class="panel-heading">{{$t('dashboard.popular_games')}}</div>
                 <div class="panel-body">
                     <div v-for="game in popular_games">

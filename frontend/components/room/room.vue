@@ -1,5 +1,5 @@
 <template>
-    <div class="room-page">
+    <div class="room-page" v-if="user.logged_in">
         <section class="content">
             <div class="row">
                 <div class="flex-column col-sm-9 col-lg-10">

@@ -70,7 +70,7 @@
                     <qi-connectivity></qi-connectivity>
                 </p>
 
-                <form class="navbar-form navbar-right main-search pull-right" @submit.prevent="submit_search">
+                <form class="navbar-form navbar-right main-search pull-right" @submit.prevent="submit_search" v-if="user.logged_in">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="{{$t('header.search')}}" autocomplete="off"
                                v-model="search_query">

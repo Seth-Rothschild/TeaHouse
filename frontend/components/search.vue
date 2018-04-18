@@ -5,13 +5,13 @@
         <qi-page-load-spinner></qi-page-load-spinner>
     </template>
     <template v-else>
-        <template v-if="users.total_results == 0 && games.total_results == 0">
+        <template v-if="users.total_results == 0 && games.total_results == 0 && user.logged_in">
             <p class="text-center">
                 <em>{{$t('search.no_results', {query: $route.params.query})}}</em>
             </p>
         </template>
 
-        <div class="panel panel-default fixed-dropdowns" v-if="users.total_results > 0">
+        <div class="panel panel-default fixed-dropdowns" v-if="users.total_results > 0 && user.logged_in">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-fw fa-users"></i>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default fixed-dropdowns search-games" v-if="games.total_results > 0">
+        <div class="panel panel-default fixed-dropdowns search-games" v-if="games.total_results > 0 && user.logged_in">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-fw fa-globe"></i>

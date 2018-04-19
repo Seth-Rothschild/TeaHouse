@@ -90,6 +90,12 @@
             }
         },
 
+	vuex: {
+            getters: {
+                user: function(state) { return state.auth.user; }
+            },
+	},
+
         ready() {
             socket.send('dashboard/popular_games', {}, function(games) {
                 this.popular_games = games;

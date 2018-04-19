@@ -113,6 +113,12 @@
             }
         },
 
+	vuex: {
+            getters: {
+                user: function(state) { return state.auth.user; }
+            },
+	},
+
         route: {
             data: function(transition) {
                 this.loading = true;

@@ -19,7 +19,8 @@
 
         vuex: {
             getters: {
-                rooms: function(state) { return state.rooms }
+                rooms: function(state) { return state.rooms },
+		user: function(state) { return state.auth.user; }
             }
         },
 

@@ -12,7 +12,7 @@ def _makesession():
     return session
 
 
-def admin_make_user(name='', password='', email='', rank=100):
+def make_user(name='', password='', email='', rank=100):
     """ Make a new user.
         Input:
             name (str): The display attribute of the user.
@@ -35,7 +35,53 @@ def admin_make_user(name='', password='', email='', rank=100):
     session.commit()
 
 
-def admin_update_rank(name='', newrank=100):
+def update_name(name='', newname=''):
+    """ Update the display attribute of a user.
+        Input:
+            name (str): The display attribute of a user.
+            newname (str): The new display attribute to assign the user.
+    """
+
+    assert newname != ''
+    session = _makesession()
+    for user in session.query(User):
+        if user.display == name:
+            user.display = newname
+    session.commit()
+
+
+def update_email(name='', newemail=''):
+    """ Update the email attribute of a user.
+        Input:
+            name (str): The display attribute of a user.
+            newemail (str): The new email attribute to assign the user.
+    """
+
+    assert newemail != ''
+    session = _makesession()
+    for user in session.query(User):
+        if user.display == name:
+            user.email = newemail
+    session.commit()
+
+
+def update_password(name='', newpass=''):
+    """ Update the password of a user.
+        Input:
+            name (str): The display attribute of a user.
+            newpass (str): The new password to assign the user.
+
+    """
+
+    assert newpass != ''
+    session = _makesession()
+    for user in session.query(User):
+        if user.display == name:
+            user.set_password(newpass)
+    session.commit()
+
+
+def update_rank(name='', newrank=100):
     """ Update the rank of a user.
         Input:
             name (str): The display attribute of a user.
@@ -50,7 +96,7 @@ def admin_update_rank(name='', newrank=100):
     session.commit()
 
 
-def admin_drop_user(name=''):
+def drop_user(name=''):
     """ Remove a user.
         Input:
             name (str): The display attribute of a user

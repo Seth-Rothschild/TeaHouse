@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import logging
 import random
 from datetime import timedelta
@@ -43,11 +27,13 @@ class Application(tornado.web.Application):
             handler(r'/api/ping', index.PingHandler),
             handler(r'/api/socket', socket.SocketHandler),
             handler(r'/api/auth/sign-up', auth.SignUpHandler),
-            handler(r'/api/auth/sign-up/confirm/(.*?)/(.*?)', auth.SignUpConfirmHandler),
+            handler(r'/api/auth/sign-up/confirm/(.*?)/(.*?)',
+                    auth.SignUpConfirmHandler),
             handler(r'/api/auth/sign-in', auth.SignInHandler),
             handler(r'/api/auth/logout', auth.LogoutHandler),
             handler(r'/api/auth/password-reset', auth.PasswordResetHandler),
-            handler(r'/api/auth/password-reset/confirm/(.*?)/(.*?)', auth.PasswordResetConfirmHandler),
+            handler(r'/api/auth/password-reset/confirm/(.*?)/(.*?)',
+                    auth.PasswordResetConfirmHandler),
 
             handler(r'/api/users/(.*?)/avatar', index.AvatarHandler),
             handler(r'/api/games/(.*?)/sgf', index.SgfHandler),
@@ -75,9 +61,12 @@ def run_app():
 
     spawn_cb = tornado.ioloop.IOLoop.current().spawn_callback
     spawn_cb(app.broker.run)
-    spawn_cb(service_callback_runner(app, GameService, 'check_due_moves', timedelta(seconds=1)))
-    spawn_cb(service_callback_runner(app, PlayService, 'cleanup_challenges', timedelta(seconds=1)))
-    spawn_cb(service_callback_runner(app, PlayService, 'cleanup_automatches', timedelta(seconds=10)))
+    spawn_cb(service_callback_runner(app, GameService,
+                                     'check_due_moves', timedelta(seconds=1)))
+    spawn_cb(service_callback_runner(app, PlayService,
+                                     'cleanup_challenges', timedelta(seconds=1)))
+    spawn_cb(service_callback_runner(app, PlayService,
+                                     'cleanup_automatches', timedelta(seconds=10)))
 
     tornado.ioloop.IOLoop.current().start()
 

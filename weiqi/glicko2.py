@@ -1,18 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 Implementation of the Glicko2 rating system.
 See: http://www.glicko.net/glicko/glicko2.pdf
@@ -117,7 +102,8 @@ class Player(Rating):
 
         if not self.results:
             # For inactive players only step 6 of the paper applies.
-            new_dev = math.sqrt((p2.deviation*p2.deviation) + (p2.volatility*p2.volatility))
+            new_dev = math.sqrt((p2.deviation*p2.deviation) +
+                                (p2.volatility*p2.volatility))
             rating = rating_from_glicko2(p2.rating, new_dev, p2.volatility)
         else:
             gees = []
@@ -126,7 +112,8 @@ class Player(Rating):
             for r in self.results:
                 opponent = r.to_glicko2()
                 gees.append(calc_g(opponent.deviation))
-                ees.append(calc_e(p2.rating, opponent.rating, opponent.deviation))
+                ees.append(
+                    calc_e(p2.rating, opponent.rating, opponent.deviation))
                 res.append(r.result)
 
             est_var = estimate_variance(gees, ees)
@@ -158,7 +145,8 @@ def player_from_dict(data):
         return None
 
     player = Player(data['rating'], data['deviation'], data['volatility'])
-    player.results = [Result(r['result'], r['rating'], r['deviation'], r['volatility']) for r in data['results']]
+    player.results = [Result(
+        r['result'], r['rating'], r['deviation'], r['volatility']) for r in data['results']]
 
     return player
 

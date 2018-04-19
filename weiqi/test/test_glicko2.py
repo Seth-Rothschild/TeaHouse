@@ -1,18 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """Glicko2 tests based on the example calculation in the paper:
 http://www.glicko.net/glicko/glicko2.pdf
 """
@@ -39,6 +24,7 @@ def opponents():
         Player(1700, 300, DEFAULT_VOLATILITY),
     ]
 
+
 @pytest.fixture
 def results():
     return [WIN, LOSS, LOSS]
@@ -47,7 +33,8 @@ def results():
 def test_rescale(opponents):
     for opp in opponents:
         glicko2 = opp.to_glicko2()
-        rescaled = rating_from_glicko2(glicko2.rating, glicko2.deviation, glicko2.volatility)
+        rescaled = rating_from_glicko2(
+            glicko2.rating, glicko2.deviation, glicko2.volatility)
 
         assert opp.almost_equals(rescaled)
 
@@ -114,7 +101,8 @@ def test_algo(player, opponents, results):
 
 def test_update_rating(player, opponents, results):
     for res, opp in zip(results, opponents):
-        player.add_result(Result(res, opp.rating, opp.deviation, opp.volatility))
+        player.add_result(
+            Result(res, opp.rating, opp.deviation, opp.volatility))
 
     player.update_rating()
 

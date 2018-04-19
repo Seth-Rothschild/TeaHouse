@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from binascii import a2b_base64
 from io import BytesIO
 
@@ -59,11 +43,13 @@ class SettingsService(BaseService):
             raise InvalidImageError('image size must be 256x256')
 
         large = BytesIO()
-        img.save(large, format='JPEG', quality=90, optimize=True, progressive=True)
+        img.save(large, format='JPEG', quality=90,
+                 optimize=True, progressive=True)
 
         small = BytesIO()
         img.thumbnail((64, 64))
-        img.save(small, format='JPEG', quality=90, optimize=True, progressive=True)
+        img.save(small, format='JPEG', quality=90,
+                 optimize=True, progressive=True)
 
         self.user.avatar_large = large.getvalue()
         self.user.avatar = small.getvalue()

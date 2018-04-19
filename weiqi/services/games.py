@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from contextlib import contextmanager
 from datetime import datetime
 
@@ -53,7 +37,8 @@ class GameService(BaseService):
         if game.is_private and game.black_user != self.user and game.white_user != self.user:
             raise NotAllowedError('this game is private')
 
-        RoomService(self.db, self.socket, self.user).join_room(game.room_id, True)
+        RoomService(self.db, self.socket, self.user).join_room(
+            game.room_id, True)
 
         self.subscribe(game.id)
         self.socket.send('game_data', game.to_frontend(full=True))
@@ -113,7 +98,8 @@ class GameService(BaseService):
                 self._publish_game_update(game)
 
             if game.is_correspondence and game.stage != 'finished':
-                CorrespondenceService(self.db, self.socket).notify_move_played(game, self.user)
+                CorrespondenceService(
+                    self.db, self.socket).notify_move_played(game, self.user)
 
     @BaseService.authenticated
     @BaseService.register
@@ -141,7 +127,8 @@ class GameService(BaseService):
     @contextmanager
     def _game_for_update(self, game_id):
         with transaction(self.db):
-            game = self.db.query(Game).options(undefer('board')).with_for_update().get(game_id)
+            game = self.db.query(Game).options(
+                undefer('board')).with_for_update().get(game_id)
             yield game
 
     def _game_move_demo(self, game, move):
@@ -272,10 +259,12 @@ class GameService(BaseService):
         UserService(self.db, self.socket, game.white_user).publish_status()
 
         if game.is_correspondence:
-            CorrespondenceService(self.db, self.socket).notify_game_finished(game)
+            CorrespondenceService(
+                self.db, self.socket).notify_game_finished(game)
 
     def _publish_game_data(self, game):
-        self.socket.publish('game_data/'+str(game.id), game.to_frontend(full=True))
+        self.socket.publish('game_data/'+str(game.id),
+                            game.to_frontend(full=True))
 
     @BaseService.authenticated
     @BaseService.register
@@ -358,7 +347,8 @@ class GameService(BaseService):
     @BaseService.authenticated
     @BaseService.register
     def edit_info(self, game_id, title, black_display, white_display):
-        game = self.db.query(Game).filter_by(id=game_id, is_demo=True, demo_owner_id=self.user.id).one()
+        game = self.db.query(Game).filter_by(
+            id=game_id, is_demo=True, demo_owner_id=self.user.id).one()
         game.title = title
         game.black_display = black_display
         game.white_display = white_display

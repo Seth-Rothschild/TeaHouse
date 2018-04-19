@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import pytest
 from weiqi.board import (Board, Node, coord2d, coord_to_2d, BLACK, WHITE, EMPTY, NODE_BLACK, NODE_WHITE,
                          board_from_string, IllegalMoveError, PASS, RESIGN, board_from_dict, neighbors, coord_from_sgf,
@@ -260,7 +244,8 @@ def test_chain():
         '.........')
 
     chains = [
-        [coord2d(4, 4), {coord2d(4, 4), coord2d(4, 5), coord2d(5, 5), coord2d(5, 6)}],
+        [coord2d(4, 4), {coord2d(4, 4), coord2d(
+            4, 5), coord2d(5, 5), coord2d(5, 6)}],
         [coord2d(4, 3), {coord2d(4, 3)}],
         [coord2d(5, 3), {coord2d(5, 3)}],
         [coord2d(6, 3), {coord2d(6, 3), coord2d(6, 4), coord2d(5, 4)}],

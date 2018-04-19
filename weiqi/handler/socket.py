@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import json
 import logging
 import uuid
@@ -48,7 +32,8 @@ class SocketMixin:
         service, method = msg.get('method').split('/', 1)
 
         with metrics.REQUEST_TIME.labels(msg.get('method')).time():
-            IOLoop.current().add_callback(self._execute_service, service, method, msg.get('data'), msg.get('id'))
+            IOLoop.current().add_callback(self._execute_service, service,
+                                          method, msg.get('data'), msg.get('id'))
 
     def on_close(self):
         for topic in self._subs:
@@ -80,7 +65,8 @@ class SocketMixin:
         self._send_data({'method': topic, 'data': data})
 
     def _send_data(self, data, response_to=''):
-        method = data.get('method') if not response_to else 'response/' + response_to
+        method = data.get(
+            'method') if not response_to else 'response/' + response_to
         data = json.dumps(data)
 
         metrics.SENT_MESSAGES.labels(method).observe(len(data))
@@ -98,7 +84,8 @@ class SocketMixin:
         res = yield execute_service(self, user_id, service, method, data)
 
         if id is not None:
-            self._send_data({'method': 'response', 'id': id, 'data': res}, response_to=service + '/' + method)
+            self._send_data({'method': 'response', 'id': id,
+                             'data': res}, response_to=service + '/' + method)
 
     def _get_user(self, db):
         user_id = self.get_secure_cookie(settings.COOKIE_NAME)

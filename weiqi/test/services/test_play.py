@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from datetime import datetime, timedelta
 
 import pytest
@@ -61,7 +45,8 @@ def test_automatch_twice(db, socket):
 def test_automatch_create_game(db, socket):
     user = UserFactory(rating=1500)
     other = UserFactory(rating=1600)
-    AutomatchFactory(user=other, user_rating=1600, user__rating=1600, min_rating=1500, max_rating=1700)
+    AutomatchFactory(user=other, user_rating=1600,
+                     user__rating=1600, min_rating=1500, max_rating=1700)
 
     socket.subscribe('game_started')
     socket.subscribe('automatch_status/'+str(user.id))
@@ -95,8 +80,10 @@ def test_automatch_create_game(db, socket):
     assert game.white_rating in [user.rating, other.rating]
     assert game.black_rating != game.white_rating
 
-    assert (game.timing.start_at - (datetime.utcnow() + settings.GAME_START_DELAY)).total_seconds() < 1
-    assert (game.timing.start_at - game.timing.timing_updated_at).total_seconds() < 1
+    assert (game.timing.start_at - (datetime.utcnow() +
+                                    settings.GAME_START_DELAY)).total_seconds() < 1
+    assert (game.timing.start_at -
+            game.timing.timing_updated_at).total_seconds() < 1
     assert (game.timing.start_at - game.timing.next_move_at).total_seconds() < 1
     assert game.timing.system == 'fischer'
     assert game.timing.black_overtime == timedelta()
@@ -114,7 +101,8 @@ def test_automatch_create_game(db, socket):
 def test_automatch_handicap_one(db, socket):
     user = UserFactory(rating=1500)
     other = UserFactory(rating=1600)
-    AutomatchFactory(user=other, user_rating=1600, user__rating=1600, min_rating=1400, max_rating=1700)
+    AutomatchFactory(user=other, user_rating=1600,
+                     user__rating=1600, min_rating=1400, max_rating=1700)
 
     svc = PlayService(db, socket, user)
     svc.execute('automatch', {'preset': 'fast', 'max_hc': 2})
@@ -126,7 +114,8 @@ def test_automatch_handicap_one(db, socket):
 def test_automatch_handicap_two(db, socket):
     user = UserFactory(rating=1400)
     other = UserFactory(rating=1600)
-    AutomatchFactory(user=other, user_rating=1600, user__rating=1600, min_rating=1400, max_rating=1700)
+    AutomatchFactory(user=other, user_rating=1600,
+                     user__rating=1600, min_rating=1400, max_rating=1700)
 
     svc = PlayService(db, socket, user)
     svc.execute('automatch', {'preset': 'fast', 'max_hc': 2})
@@ -139,7 +128,8 @@ def test_automatch_preset(db, socket):
     user = UserFactory(rating=1500)
     other = UserFactory(rating=1500)
     third = UserFactory(rating=1500)
-    AutomatchFactory(user=user, user_rating=1500, user__rating=1500, min_rating=1500, max_rating=1500, preset='fast')
+    AutomatchFactory(user=user, user_rating=1500, user__rating=1500,
+                     min_rating=1500, max_rating=1500, preset='fast')
 
     svc = PlayService(db, socket, other)
     svc.execute('automatch', {'preset': 'slow', 'max_hc': 1})
@@ -349,7 +339,8 @@ def test_challenge(db, socket):
     assert challenge.board_size == 19
     assert challenge.handicap == 0
     assert challenge.owner_is_black
-    assert ((challenge.expire_at - datetime.utcnow()) - settings.CHALLENGE_EXPIRATION).total_seconds() < 60
+    assert ((challenge.expire_at - datetime.utcnow()) -
+            settings.CHALLENGE_EXPIRATION).total_seconds() < 60
     assert not challenge.is_correspondence
     assert challenge.timing_system == 'fischer'
     assert challenge.maintime == timedelta(minutes=10)
@@ -587,7 +578,8 @@ def test_accept_challenge(db, socket):
 
 
 def test_accept_expired_challenge(db, socket):
-    challenge = ChallengeFactory(expire_at=datetime.utcnow() - timedelta(seconds=1))
+    challenge = ChallengeFactory(
+        expire_at=datetime.utcnow() - timedelta(seconds=1))
     svc = PlayService(db, socket, challenge.challengee)
 
     with pytest.raises(ChallengeExpiredError):
@@ -595,7 +587,8 @@ def test_accept_expired_challenge(db, socket):
 
 
 def test_accept_challenge_correspondence(db, socket, mails):
-    challenge = ChallengeFactory(is_correspondence=True, owner__is_online=False, challengee__is_online=False)
+    challenge = ChallengeFactory(
+        is_correspondence=True, owner__is_online=False, challengee__is_online=False)
 
     svc = PlayService(db, socket, challenge.challengee)
     svc.execute('accept_challenge', {'challenge_id': challenge.id})
@@ -607,7 +600,8 @@ def test_accept_challenge_correspondence(db, socket, mails):
     assert len(mails) == 2
     assert mails[0]['template'] == 'correspondence/challenge_started.txt'
     assert mails[1]['template'] == 'correspondence/challenge_started.txt'
-    assert {mails[0]['to'], mails[1]['to']} == {challenge.owner.email, challenge.challengee.email}
+    assert {mails[0]['to'], mails[1]['to']} == {
+        challenge.owner.email, challenge.challengee.email}
 
 
 def test_cleanup_challenges(db, socket):
@@ -623,7 +617,8 @@ def test_cleanup_automatches(db, socket):
     u1 = UserFactory(is_online=True)
     AutomatchFactory(user=u1, preset='correspondence')
 
-    u2 = UserFactory(is_online=False, last_activity_at=datetime.utcnow() - settings.AUTOMATCH_EXPIRE_CORRESPONDENCE)
+    u2 = UserFactory(is_online=False, last_activity_at=datetime.utcnow(
+    ) - settings.AUTOMATCH_EXPIRE_CORRESPONDENCE)
     AutomatchFactory(user=u2, preset='correspondence')
 
     u3 = UserFactory(is_online=False, last_activity_at=datetime.utcnow() - settings.AUTOMATCH_EXPIRE_CORRESPONDENCE +

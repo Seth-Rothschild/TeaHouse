@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from datetime import datetime, timedelta
 
 
@@ -31,9 +15,11 @@ def update_timing_after_move(timing, was_blacks_turn):
         raise ValueError('unknown timing system: {}'.format(timing.system))
 
     if was_blacks_turn:
-        timing.black_main, timing.black_overtime = updater(timing, timing.black_main, timing.black_overtime)
+        timing.black_main, timing.black_overtime = updater(
+            timing, timing.black_main, timing.black_overtime)
     else:
-        timing.white_main, timing.white_overtime = updater(timing, timing.white_main, timing.white_overtime)
+        timing.white_main, timing.white_overtime = updater(
+            timing, timing.white_main, timing.white_overtime)
 
     total_other = timing.white_total if was_blacks_turn else timing.black_total
     timing.next_move_at = datetime.utcnow() + total_other

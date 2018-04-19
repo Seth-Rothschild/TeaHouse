@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import random
 from datetime import datetime, timedelta
 
@@ -74,7 +58,8 @@ class PlayService(BaseService):
             other = query.first()
 
             if other:
-                game = self._create_automatch_game(self.user, other.user, preset)
+                game = self._create_automatch_game(
+                    self.user, other.user, preset)
                 self.db.delete(other)
             else:
                 item = Automatch(preset=preset,
@@ -90,7 +75,8 @@ class PlayService(BaseService):
             self._publish_automatch(game.white_user, False)
 
             if game.is_correspondence:
-                CorrespondenceService(self.db, self.socket).notify_automatch_started(game)
+                CorrespondenceService(
+                    self.db, self.socket).notify_automatch_started(game)
         else:
             self._publish_automatch(self.user, True)
 
@@ -111,7 +97,8 @@ class PlayService(BaseService):
         self._publish_automatch(self.user, False)
 
     def _publish_automatch(self, user, in_queue):
-        self.socket.publish('automatch_status/'+str(user.id), {'in_queue': in_queue})
+        self.socket.publish('automatch_status/' +
+                            str(user.id), {'in_queue': in_queue})
 
     @BaseService.authenticated
     @BaseService.register
@@ -247,17 +234,21 @@ class PlayService(BaseService):
             raise ChallengePrivateCannotBeRankedError()
 
         if handicap is None or ranked:
-            black, white, handicap = self.game_players_handicap(self.user, other)
+            black, white, handicap = self.game_players_handicap(
+                self.user, other)
             owner_is_black = (black == self.user)
-            komi = (settings.DEFAULT_KOMI if handicap == 0 else settings.HANDICAP_KOMI)
+            komi = (settings.DEFAULT_KOMI if handicap ==
+                    0 else settings.HANDICAP_KOMI)
 
         if owner_is_black is None:
             owner_is_black = (random.choice([0, 1]) == 0)
 
-        self.db.query(Challenge).filter_by(owner=self.user, challengee=other).delete()
+        self.db.query(Challenge).filter_by(
+            owner=self.user, challengee=other).delete()
 
         if correspondence:
-            expire_at = (datetime.utcnow() + settings.CORRESPONDENCE_CHALLENGE_EXPIRATION)
+            expire_at = (datetime.utcnow() +
+                         settings.CORRESPONDENCE_CHALLENGE_EXPIRATION)
             maintime = timedelta(hours=maintime)
             overtime = timedelta(hours=overtime)
         else:
@@ -288,21 +279,24 @@ class PlayService(BaseService):
     @BaseService.authenticated
     @BaseService.register
     def decline_challenge(self, challenge_id):
-        challenge = self.db.query(Challenge).filter_by(id=challenge_id, challengee=self.user).one()
+        challenge = self.db.query(Challenge).filter_by(
+            id=challenge_id, challengee=self.user).one()
         self.db.delete(challenge)
         self._publish_challenges(challenge)
 
     @BaseService.authenticated
     @BaseService.register
     def cancel_challenge(self, challenge_id):
-        challenge = self.db.query(Challenge).filter_by(id=challenge_id, owner=self.user).one()
+        challenge = self.db.query(Challenge).filter_by(
+            id=challenge_id, owner=self.user).one()
         self.db.delete(challenge)
         self._publish_challenges(challenge)
 
     @BaseService.authenticated
     @BaseService.register
     def accept_challenge(self, challenge_id):
-        challenge = self.db.query(Challenge).filter_by(id=challenge_id, challengee=self.user).one()
+        challenge = self.db.query(Challenge).filter_by(
+            id=challenge_id, challengee=self.user).one()
 
         if challenge.expire_at < datetime.utcnow():
             raise ChallengeExpiredError()
@@ -325,7 +319,8 @@ class PlayService(BaseService):
         self._publish_challenges(challenge)
 
         if game.is_correspondence:
-            CorrespondenceService(self.db, self.socket).notify_challenge_started(game)
+            CorrespondenceService(
+                self.db, self.socket).notify_challenge_started(game)
 
     def game_players_handicap(self, user: User, other: User):
         handicap = rank_diff(user.rating, other.rating)
@@ -403,7 +398,8 @@ class PlayService(BaseService):
 
     def cleanup_challenges(self):
         """Deletes and publishes expired challenges."""
-        challenges = self.db.query(Challenge).with_for_update().filter((Challenge.expire_at < datetime.utcnow()))
+        challenges = self.db.query(Challenge).with_for_update().filter(
+            (Challenge.expire_at < datetime.utcnow()))
 
         for ch in challenges:
             self.db.delete(ch)
@@ -411,7 +407,8 @@ class PlayService(BaseService):
 
     def _publish_challenges(self, challenge):
         for user in [challenge.owner, challenge.challengee]:
-            challenges = [c.to_frontend() for c in Challenge.open_challenges(self.db, user)]
+            challenges = [c.to_frontend()
+                          for c in Challenge.open_challenges(self.db, user)]
             self.socket.publish('challenges/'+str(user.id), challenges)
 
     def cleanup_automatches(self):

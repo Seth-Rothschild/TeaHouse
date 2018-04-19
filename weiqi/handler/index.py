@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from sqlalchemy.orm import undefer
 from tornado.web import HTTPError
 from weiqi import settings
@@ -31,7 +15,8 @@ class IndexHandler(BaseHandler):
             'HANDICAP_KOMI': settings.HANDICAP_KOMI,
         }
 
-        self.set_secure_cookie(settings.COOKIE_NAME, self.get_secure_cookie(settings.COOKIE_NAME) or '')
+        self.set_secure_cookie(
+            settings.COOKIE_NAME, self.get_secure_cookie(settings.COOKIE_NAME) or '')
 
         self.set_header('Cache-control', 'no-cache, no-store, must-revalidate')
         self.set_header('Pragma', 'no-cache')
@@ -49,7 +34,8 @@ class AvatarHandler(BaseHandler):
     def get(self, user_id):
         want_large = self.get_argument('size', '') == 'large'
 
-        user = self.db.query(User.avatar, User.avatar_large, User.display).filter_by(id=user_id).first()
+        user = self.db.query(User.avatar, User.avatar_large,
+                             User.display).filter_by(id=user_id).first()
 
         if user:
             avatar = user[1] if want_large else user[0]
@@ -74,10 +60,12 @@ class SgfHandler(BaseHandler):
         if not game:
             raise HTTPError(404)
 
-        filename = '%s-%s-%s.sgf' % (game.created_at.date().isoformat(), game.white_display, game.black_display)
+        filename = '%s-%s-%s.sgf' % (game.created_at.date().isoformat(),
+                                     game.white_display, game.black_display)
 
         self.set_header('Content-Type', 'application/x-go-sgf; charset=utf-8')
-        self.set_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+        self.set_header('Content-Disposition',
+                        'attachment; filename="%s"' % filename)
 
         self.enable_cors()
 

@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-sm-8 col-sm-pull-4">
-            <div class="panel panel-default">
+            <div class="panel panel-default" v-if="user.logged_in">
                 <div class="panel-heading">{{$t('dashboard.popular_games')}}</div>
                 <div class="panel-body">
                     <div v-for="game in popular_games">
@@ -72,6 +72,17 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default" v-else>
+	    	<div class="panel-heading">Welcome!</div>
+                <div class="panel-body">
+		     <p>
+		         This is a private server whose purpose is to provide a pleasant place to play go. For more project details, see the README on github or the FAQ on the same page. 
+		    </p>
+		    <p>
+		         The source code for <i>Tea House</i> is a fork of Michael Bitzi's weiqi.gs. Though access to this particular serve is limited, the code is open source and copyleft under AGPLv3. 
+	            </p>
+		</div>
+	    </div>
         </div>
     </div>
 </template>
@@ -89,6 +100,12 @@
                 stats: {}
             }
         },
+
+	vuex: {
+            getters: {
+                user: function(state) { return state.auth.user; }
+            },
+	},
 
         ready() {
             socket.send('dashboard/popular_games', {}, function(games) {

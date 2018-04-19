@@ -69,7 +69,7 @@
             </div>
         </div>
 
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" v-if="user.logged_in>
             <li v-link-active>
                 <a v-link="{name:'active_games', exact: true}">
                     <i class="fa fa-globe"></i>
@@ -99,7 +99,7 @@
             </template>
         </ul>
 
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" v-if="user.logged_in">
             <li class="header">{{$t('sidebar.games')}}</li>
 
             <template v-for="game in sorted_games">
@@ -126,7 +126,7 @@
             </li>
         </ul>
 
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" v-if="user.logged_in">
             <li class="header">{{$t('sidebar.rooms')}}</li>
             <template v-for="room in main_rooms">
                 <li v-if="room.type=='main'" v-link-active :class="{highlight: room_has_update[room.id]}">

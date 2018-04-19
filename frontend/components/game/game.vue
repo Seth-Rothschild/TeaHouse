@@ -1,5 +1,5 @@
 <template>
-    <div class="row" v-if="timer_started" v-el:game>
+    <div class="row" v-if="timer_started && user.logged_in" v-el:game>
         <div class="col-sm-9 game-detail-left">
             <template v-if="!has_started">
                 <h1 class="text-center">{{$t('game.will_start_in')}}</h1>

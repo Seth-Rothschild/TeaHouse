@@ -88,7 +88,7 @@ class User(Base):
 
     @validates('display')
     def validate_display(self, key, val):
-        if not re.match(r'^[a-zA-Z0-9_-]{2,12}$', val):
+        if not re.match(r'^[a-zA-Z0-9 _-]{2,20}$', val):
             raise ValueError('invalid display name')
         return val
 

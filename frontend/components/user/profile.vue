@@ -1,5 +1,5 @@
 <template>
-    <div v-if="user.id" class="qi-profile">
+    <div v-if="user.id && auth_user.logged_in" class="qi-profile">
         <div class="row">
             <div class="col-sm-4">
                 <p class="text-center">
@@ -141,7 +141,7 @@
             getters: {
                 auth_user: function (state) {
                     return state.auth.user
-                }
+                },
             },
 
             actions: {

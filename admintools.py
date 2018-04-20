@@ -35,6 +35,35 @@ def make_user(name='', password='', email='', rank=100):
     session.commit()
 
 
+def get_user_object(name='', email=''):
+    """ Get user object from name or info.
+        Input:
+            name (str, optional): The display attribute of a user.
+            email (str, optional): The email of a user.
+        Output:
+            user (models.User): A user object from models.
+            session (sqlalchemy.session): A connected sesion to the db.
+    """
+
+    session = _makesession()
+    assert (name == '' or email == '')
+    if name != '':
+        for user in session.query(User):
+            if user.display == name:
+                out = (user, session)
+    elif email != '':
+        for user in session.query(User):
+            if user.email == email:
+                out = (user, session)
+    else:
+        print('Please provide a name or an email')
+        return None
+
+    print('Returned (user, session)')
+    print('Commit any changes when done with session.commit()')
+    return out
+
+
 def update_name(name='', newname=''):
     """ Update the display attribute of a user.
         Input:

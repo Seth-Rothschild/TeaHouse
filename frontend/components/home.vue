@@ -76,10 +76,10 @@
 	    	<div class="panel-heading">Welcome!</div>
                 <div class="panel-body">
 		     <p>
-		         This is a private server whose purpose is to provide a pleasant place to play go. For more project details, see the README on github or the FAQ on the same page. 
+		         This is a private server whose purpose is to provide a pleasant place to play go. For more project details, see the <a href="https://github.com/Seth-Rothschild/TeaHouse/blob/master/README.md">README</a> on github or the FAQ on the same page. 
 		    </p>
 		    <p>
-		         The source code for <i>Tea House</i> is a fork of Michael Bitzi's weiqi.gs. Though access to this particular serve is limited, the code is open source and copyleft under AGPLv3. 
+		         The source code for <i>Tea House</i> is a fork of Michael Bitzi's <a href="https://gitlab.com/mibitzi/weiqi.gs">weiqi.gs</a>. Though access to this particular server is limited, the code remains <a href="https://github.com/Seth-Rothschild/TeaHouse">open source</a> and copyleft under <a href="https://github.com/Seth-Rothschild/TeaHouse/blob/master/LICENSE">AGPLv3</a>. 
 	            </p>
 		</div>
 	    </div>

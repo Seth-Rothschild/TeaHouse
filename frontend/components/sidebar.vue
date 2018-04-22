@@ -29,42 +29,47 @@
                 </button>
 
                 <div class="btn-group btn-block" v-if="user.logged_in">
-                    <template v-if="user.automatch">
-                        <button type="button" class="btn btn-primary col-xs-10" @click="cancel_automatch">
+                    <template v-if="!user.automatch">
+                        <button type="button" class="btn btn-primary dropdown-toggle col-xs-12" data-toggle="dropdown">
+      		            {{$t('sidebar.play')}}
+                        </button>
+                        <ul class="dropdown-menu col-xs-12">
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#qi-play-dialog">
+                                    <i class="fa fa-fw fa-globe"></i>
+				    <span> Automatch </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#qi-challenge">
+                                    <i class="fa fa-fw fa-trophy"></i>
+                                    {{$t('sidebar.challenge')}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#qi-create-demo">
+                                    <i class="fa fa-fw fa-desktop"></i>
+                                    {{$t('sidebar.create_demo')}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#qi-upload-sgf">
+                                    <i class="fa fa-fw fa-upload"></i>
+                                    {{$t('sidebar.upload_sgf')}}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </template>
+		    
+
+                    <template v-else>
+                        <button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" @click="cancel_automatch">
                             <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;
                             {{$t('sidebar.searching_automatch')}}
                         </button>
                     </template>
-                    <template v-else>
-                        <button type="button" class="btn btn-primary col-xs-10" data-toggle="modal" data-target="#qi-play-dialog">
-                            {{$t('sidebar.play')}}
-                        </button>
-                    </template>
-
-                    <button type="button" class="btn btn-primary dropdown-toggle col-xs-2" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </button>
-
-                    <ul class="dropdown-menu col-xs-12">
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#qi-create-demo">
-                                <i class="fa fa-fw fa-desktop"></i>
-                                {{$t('sidebar.create_demo')}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#qi-upload-sgf">
-                                <i class="fa fa-fw fa-upload"></i>
-                                {{$t('sidebar.upload_sgf')}}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#qi-challenge">
-                                <i class="fa fa-fw fa-trophy"></i>
-                                {{$t('sidebar.challenge')}}
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

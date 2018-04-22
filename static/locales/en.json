@@ -83,7 +83,7 @@
   "sidebar": {
     "search": "Search",
     "play": "Play",
-    "searching_automatch": "Searching game ...",
+    "searching_automatch": "Searching",
     "sign_in": "Sign in",
     "create_demo": "Create Demo",
     "upload_sgf": "Upload SGF",
@@ -94,7 +94,7 @@
     "no_games": "You have no open games",
     "active_games": "Active Games",
     "rooms": "Rooms",
-    "people": "People",
+    "people": "Messages",
     "no_direct_rooms": "You have no open chats"
   },
 

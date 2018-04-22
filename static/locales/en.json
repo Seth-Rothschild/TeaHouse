@@ -83,7 +83,7 @@
   "sidebar": {
     "search": "Search",
     "play": "Play",
-    "searching_automatch": "Searching game ...",
+    "searching_automatch": "Searching",
     "sign_in": "Sign in",
     "create_demo": "Create Demo",
     "upload_sgf": "Upload SGF",

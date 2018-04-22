@@ -54,7 +54,7 @@
                     if (!this.window_title) {
                         document.title = 'A quiet place to play go';
                     } else {
-                        document.title = this.window_title + ' - weiqi.gs';
+                        document.title = this.window_title + ' - Tea House';
                     }
                 }
             },

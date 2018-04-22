@@ -56,7 +56,7 @@ def _prop_coords(coords, size):
 
 
 def game_to_sgf(game):
-    sgf = '(;SO[weiqi.gs]\nFF[4]\nDT[%(dt)s]\nPW[%(pw)s]\nPB[%(pb)s]\nKM[%(km).1f]\nSZ[%(sz)d]\n' % {
+    sgf = '(;SO[TeaHouse]\nFF[4]\nDT[%(dt)s]\nPW[%(pw)s]\nPB[%(pb)s]\nKM[%(km).1f]\nSZ[%(sz)d]\n' % {
         'dt': game.created_at.date().isoformat(),
         'pw': game.white_display,
         'pb': game.black_display,

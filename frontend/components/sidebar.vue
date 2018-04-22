@@ -29,11 +29,18 @@
                 </button>
 
                 <div class="btn-group btn-block" v-if="user.logged_in">
-                    <template v-if="user.logged_in">
-                        <button type="button" class="btn btn-primary dropdown-toggle col-xs-10" data-toggle="dropdown">
+                    <template v-if="!user.automatch">
+                        <button type="button" class="btn btn-primary dropdown-toggle col-xs-12" data-toggle="dropdown">
       		            {{$t('sidebar.play')}}
                         </button>
                         <ul class="dropdown-menu col-xs-12">
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#qi-play-dialog">
+                                    <i class="fa fa-fw fa-globe"></i>
+				    <span> Automatch </span>
+                                </a>
+                            </li>
+
                             <li>
                                 <a href="#" data-toggle="modal" data-target="#qi-challenge">
                                     <i class="fa fa-fw fa-trophy"></i>
@@ -54,22 +61,15 @@
                             </li>
 
                         </ul>
-
-
                     </template>
 		    
 
-                    <template v-if="user.automatch">
-                        <button type="button" class="btn btn-primary col-xs-2" data-toggle="modal" @click="cancel_automatch">
+                    <template v-else>
+                        <button type="button" class="btn btn-primary col-xs-12" data-toggle="modal" @click="cancel_automatch">
                             <i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;
                             {{$t('sidebar.searching_automatch')}}
                         </button>
                     </template>
-		    <template v-else>
-		        <button type="button" class="btn btn-primary col-xs-2" data-toggle="modal" data-target="#qi-play-dialog">
-		            <span class="caret"></span>
-                        </button>
-		    </template>
                 </div>
             </div>
         </div>

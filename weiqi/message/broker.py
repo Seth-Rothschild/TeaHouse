@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import pika
 from pika import adapters
 from weiqi import settings
@@ -50,17 +34,21 @@ class Ampq:
     def on_channel_open(self, channel):
         self._channel = channel
         self._channel.add_on_close_callback(self.on_channel_closed)
-        self._channel.exchange_declare(self.on_exchange_declareok, self.EXCHANGE, self.EXCHANGE_TYPE)
+        self._channel.exchange_declare(
+            self.on_exchange_declareok, self.EXCHANGE, self.EXCHANGE_TYPE)
 
     def on_exchange_declareok(self, frame):
-        self._queue = self._channel.queue_declare(self.on_queue_declareok, exclusive=True)
+        self._queue = self._channel.queue_declare(
+            self.on_queue_declareok, exclusive=True)
 
     def on_queue_declareok(self, frame):
         self._queue_name = frame.method.queue
-        self._channel.queue_bind(self.on_bindok, exchange=self.EXCHANGE, queue=self._queue_name)
+        self._channel.queue_bind(
+            self.on_bindok, exchange=self.EXCHANGE, queue=self._queue_name)
 
     def on_bindok(self, frame):
-        self._consumer_tag = self._channel.basic_consume(self.on_message, queue=self._queue_name)
+        self._consumer_tag = self._channel.basic_consume(
+            self.on_message, queue=self._queue_name)
 
     def on_message(self, channel, basic_deliver, properties, body):
         self._channel.basic_ack(basic_deliver.delivery_tag)
@@ -70,7 +58,8 @@ class Ampq:
             handler(body)
 
     def send_message(self, message):
-        self._channel.basic_publish(exchange=self.EXCHANGE, routing_key='', body=message)
+        self._channel.basic_publish(
+            exchange=self.EXCHANGE, routing_key='', body=message)
 
     def on_channel_closed(self, channel, reply_code, reply_text):
         self._connection.close()
@@ -106,6 +95,7 @@ class DummyBroker:
     This implementation simply broadcasts all messages to all handlers and works only within the same process.
     This can be used for tests and/or for development.
     """
+
     def __init__(self):
         self._handler = set()
 

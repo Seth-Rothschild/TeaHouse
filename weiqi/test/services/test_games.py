@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from datetime import datetime, timedelta
 
 import pytest
@@ -59,7 +43,8 @@ def test_open_room_logs(db, socket):
     svc = GameService(db, socket)
     svc.execute('open_game', {'game_id': game.id})
 
-    assert len(list(filter(lambda l: l['method'] == 'room_logs', socket.sent_messages))) == 1
+    assert len(
+        list(filter(lambda l: l['method'] == 'room_logs', socket.sent_messages))) == 1
 
 
 def test_close(db, socket):
@@ -231,14 +216,16 @@ def test_game_finished_user_status(db, socket):
 
 
 def test_game_finished_correspondence(db, socket, mails):
-    game = GameFactory(is_correspondence=True, black_user__is_online=False, white_user__is_online=False)
+    game = GameFactory(is_correspondence=True,
+                       black_user__is_online=False, white_user__is_online=False)
     svc = GameService(db, socket, game.black_user)
     svc.execute('move', {'game_id': game.id, 'move': RESIGN})
 
     assert len(mails) == 2
     assert mails[0]['template'] == 'correspondence/game_finished.txt'
     assert mails[1]['template'] == 'correspondence/game_finished.txt'
-    assert {mails[0]['to'], mails[1]['to']} == {game.black_user.email, game.white_user.email}
+    assert {mails[0]['to'], mails[1]['to']} == {
+        game.black_user.email, game.white_user.email}
 
 
 def test_stages_playing_counting(db, socket):
@@ -278,7 +265,8 @@ def test_resume_from_counting_time(db, socket):
     game.timing.timing_updated_at = datetime.utcnow() - timedelta(minutes=10)
     svc.execute('resume_from_counting', {'game_id': game.id})
 
-    assert (game.timing.timing_updated_at - datetime.utcnow()).total_seconds() < 3
+    assert (game.timing.timing_updated_at -
+            datetime.utcnow()).total_seconds() < 3
 
 
 def test_resume_counting_other(db, socket):
@@ -392,7 +380,8 @@ def test_confirm_score_finished(db, socket):
 
 
 def test_start_delay(db, socket):
-    game = GameFactory(timing__start_at=datetime.utcnow() + timedelta(seconds=10))
+    game = GameFactory(timing__start_at=datetime.utcnow() +
+                       timedelta(seconds=10))
     svc = GameService(db, socket, game.black_user)
 
     with pytest.raises(GameHasNotStartedError):
@@ -567,8 +556,10 @@ def test_resume_all_games_fischer(db):
     svc.resume_all_games()
 
     timing = db.query(Timing).first()
-    assert timing.black_main == (timedelta(seconds=10) + settings.RESUME_TIMING_ADD_TIME)
-    assert timing.white_main == (timedelta(seconds=20) + settings.RESUME_TIMING_ADD_TIME)
+    assert timing.black_main == (
+        timedelta(seconds=10) + settings.RESUME_TIMING_ADD_TIME)
+    assert timing.white_main == (
+        timedelta(seconds=20) + settings.RESUME_TIMING_ADD_TIME)
     assert timing.black_overtime == timedelta()
     assert timing.white_overtime == timedelta()
 

@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from tornado.web import HTTPError
 from weiqi import settings, metrics
 from weiqi.glicko2 import Player
@@ -129,11 +113,13 @@ class PasswordResetConfirmHandler(BaseHandler):
 
         if not user or not user.check_auth_token(token):
             show_form = False
-            messages.append({'type': 'danger', 'message': 'Token is invalid or user was not found.'})
+            messages.append(
+                {'type': 'danger', 'message': 'Token is invalid or user was not found.'})
         else:
             show_form = True
 
-        self.render("password_reset.html", messages=messages, show_form=show_form)
+        self.render("password_reset.html",
+                    messages=messages, show_form=show_form)
 
     def post(self, user_id, token):
         messages = []
@@ -145,10 +131,12 @@ class PasswordResetConfirmHandler(BaseHandler):
         password_confirm = self.get_body_argument('password-confirm')
 
         if password != password_confirm:
-            messages.append({'type': 'danger', 'message': 'Passwords do not match'})
+            messages.append(
+                {'type': 'danger', 'message': 'Passwords do not match'})
         else:
             user.set_password(password)
             messages.append({'type': 'success', 'message': 'Password reset'})
             show_form = False
 
-        self.render("password_reset.html", messages=messages, show_form=show_form)
+        self.render("password_reset.html",
+                    messages=messages, show_form=show_form)

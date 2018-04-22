@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from weiqi.models import Room, RoomMessage, RoomUser, DirectRoom, User
 from weiqi.services import BaseService, ServiceError
 
@@ -24,7 +8,8 @@ class RoomService(BaseService):
     @BaseService.authenticated
     @BaseService.register
     def message(self, room_id, message):
-        ru = self.db.query(RoomUser).filter_by(user=self.user, room_id=room_id).first()
+        ru = self.db.query(RoomUser).filter_by(
+            user=self.user, room_id=room_id).first()
         if not ru:
             raise ServiceError('user not in room')
 
@@ -41,7 +26,8 @@ class RoomService(BaseService):
         if ru.room.type == 'direct':
             self._message_direct(ru.room, msg)
         else:
-            self.socket.publish('room_message/'+str(room_id), msg.to_frontend())
+            self.socket.publish(
+                'room_message/'+str(room_id), msg.to_frontend())
 
     def _message_direct(self, room, msg):
         direct = self.db.query(DirectRoom).filter_by(room=room).one()
@@ -56,13 +42,16 @@ class RoomService(BaseService):
         if direct.room.users.filter_by(user=other).count() == 0:
             self.db.add(RoomUser(room=direct.room, user=other))
 
-        self.socket.publish('direct_message/'+str(direct.user_one_id), msg.to_frontend())
-        self.socket.publish('direct_message/'+str(direct.user_two_id), msg.to_frontend())
+        self.socket.publish('direct_message/' +
+                            str(direct.user_one_id), msg.to_frontend())
+        self.socket.publish('direct_message/' +
+                            str(direct.user_two_id), msg.to_frontend())
 
     @BaseService.register
     def users(self, room_id):
         room = self.db.query(Room).get(room_id)
-        query = self.db.query(RoomUser).filter_by(room_id=room.id).join('user').filter_by(is_online=True)
+        query = self.db.query(RoomUser).filter_by(
+            room_id=room.id).join('user').filter_by(is_online=True)
 
         return {'users': [ru.to_frontend() for ru in query]}
 
@@ -132,7 +121,8 @@ class RoomService(BaseService):
 
                 self._update_users_max(room_id)
 
-                self.socket.publish('room_user/'+str(ru.room_id), ru.to_frontend())
+                self.socket.publish(
+                    'room_user/'+str(ru.room_id), ru.to_frontend())
 
         if send_logs:
             room = self.db.query(Room).get(room_id)
@@ -145,10 +135,12 @@ class RoomService(BaseService):
         self._unsubscribe(room_id)
 
         if self.user:
-            ru = self.db.query(RoomUser).filter_by(user=self.user, room_id=room_id).first()
+            ru = self.db.query(RoomUser).filter_by(
+                user=self.user, room_id=room_id).first()
 
             if ru:
-                self.socket.publish('room_user_left/'+str(ru.room_id), ru.to_frontend())
+                self.socket.publish('room_user_left/' +
+                                    str(ru.room_id), ru.to_frontend())
                 self.db.delete(ru)
 
     def _subscribe(self, room_id):
@@ -163,7 +155,8 @@ class RoomService(BaseService):
 
     def _update_users_max(self, room_id):
         room = self.db.query(Room).filter_by(id=room_id).one()
-        count = self.db.query(RoomUser).join(User).filter((RoomUser.room == room) & (User.is_online.is_(True))).count()
+        count = self.db.query(RoomUser).join(User).filter(
+            (RoomUser.room == room) & (User.is_online.is_(True))).count()
         room.users_max = max(room.users_max, count)
 
     def publish_user_rooms(self):
@@ -172,9 +165,11 @@ class RoomService(BaseService):
 
         for ru in self.user.rooms:
             if self.user.is_online:
-                self.socket.publish('room_user/'+str(ru.room_id), ru.to_frontend())
+                self.socket.publish(
+                    'room_user/'+str(ru.room_id), ru.to_frontend())
             else:
-                self.socket.publish('room_user_left/'+str(ru.room_id), ru.to_frontend())
+                self.socket.publish('room_user_left/' +
+                                    str(ru.room_id), ru.to_frontend())
 
     def create_default_room(self, name):
         """Creates a new default room and adds all users to that room."""

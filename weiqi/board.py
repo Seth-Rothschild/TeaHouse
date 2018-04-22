@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import re
 
 EMPTY = '.'
@@ -114,7 +98,8 @@ class Node:
             'move': self.move,
         }
 
-        skip_empty = ['edits', 'captures', 'marked_dead', 'score_points', 'labels', 'symbols']
+        skip_empty = ['edits', 'captures', 'marked_dead',
+                      'score_points', 'labels', 'symbols']
         for field in skip_empty:
             val = getattr(self, field)
             if val:
@@ -549,7 +534,8 @@ def board_from_string(pos, size=9) -> Board:
     pos = re.sub(r'\s', '', pos)
 
     if len(pos) != size*size:
-        raise ValueError('board string has incorrect length: {}'.format(len(pos)))
+        raise ValueError(
+            'board string has incorrect length: {}'.format(len(pos)))
 
     board = Board(size)
 

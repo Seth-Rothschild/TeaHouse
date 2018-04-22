@@ -18,7 +18,7 @@ export function notify(message, onclick) {
         icon: '/static/favicon/apple-touch-icon-precomposed.png'
     };
 
-    var n = new Notification('weiqi.gs', options);
+    var n = new Notification('Tea House', options);
 
     setTimeout(n.close.bind(n), 10000);
 

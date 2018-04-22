@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from weiqi.models import Game, Room, RoomUser, DirectRoom, Connection, Automatch, Challenge
 from weiqi.services import BaseService, UserService, GameService, RoomService
 
@@ -83,7 +67,8 @@ class ConnectionService(BaseService):
 
         for room in Room.open_rooms(self.db, self.user):
             rooms.append(room.to_frontend())
-            logs[room.id] = [m.to_frontend() for m in room.recent_messages(self.db)]
+            logs[room.id] = [m.to_frontend()
+                             for m in room.recent_messages(self.db)]
 
         return {'rooms': rooms, 'room_logs': logs}
 
@@ -138,7 +123,8 @@ class ConnectionService(BaseService):
             RoomService(self.db, self.socket, self.user).join_room(room.id)
 
             if room.type == 'game':
-                GameService(self.db, self.socket, self.user).subscribe(room.game.id)
+                GameService(self.db, self.socket,
+                            self.user).subscribe(room.game.id)
 
     def _insert_connection(self):
         conn = Connection(id=self.socket.id,
@@ -152,4 +138,5 @@ class ConnectionService(BaseService):
 
     def _check_is_online(self):
         if self.user:
-            self.user.is_online = self.db.query(Connection).filter_by(user_id=self.user.id).count() > 0
+            self.user.is_online = self.db.query(Connection).filter_by(
+                user_id=self.user.id).count() > 0

@@ -221,23 +221,23 @@
       }
     },
     "contribute": {
-      "header": "How can I contribute?",
+      "header": "What is AGPLv3?",
       "text": {
-        "p1": "weiqi.gs is fully open source, which means anyone who wishes to contribute has the chance to do so.",
-        "p2": "Even if you are not a programmer, there are many ways to contribute. If you are interested please check our <a href=\"http://gitlab.com/mibitzi/weiqi.gs#contribute\" target=\"_blank\">GitLab repository</a> for more information."
+        "p1": "Tea House is fully open source under the GNU Affero General Public License v3.0. The license requires, among other things, that derived works also share their source code.",
+        "p2": "You are free to contribute code or fork your own version of Tea House. If you are interested, the issues list and codebase can be found on <a href=\"http://github.com/Seth-Rothschild/TeaHouse\" target=\"_blank\">Github.</a>"
       }
     },
     "bug": {
-      "header": "I found a bug",
+      "header": "Something's broken",
       "text": {
-        "p1": "Please report all bugs on our <a href=\"http://gitlab.com/mibitzi/weiqi.gs/issues\" target=\"_blank\">issue tracker</a> on GitLab.",
-        "p2": "Please also check if there is already an existing issue covering this problem before opening a new one."
+        "p1": "This service is provided with no warranty. The hope is that bugfixes and feature implementations will happen eventually. If you have such a request, please post on the <a href=\"http://github.com/Seth-Rothschild/TeaHouse/issues\" target=\"_blank\">issues page</a> on github.",
+        "p2": ""
       }
     },
     "ruleset": {
-      "header": "What rules are used?",
+      "header": "How does scoring work?",
       "text": {
-        "p1": "All games are played with chinese rules. This means you should fill all dame (neutral) points at the end of the game."
+        "p1": "All games are played with Chinese rules. Players get points for every live stone they play and for every empty space in that territory. This means that dame (neutral empty points) are worth a point."
       }
     },
     "avatar": {

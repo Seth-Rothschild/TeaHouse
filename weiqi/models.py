@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import hmac
 import json
 import re
@@ -48,7 +32,8 @@ class User(Base):
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow)
     last_activity_at = Column(DateTime)
 
     is_active = Column(Boolean, nullable=False, default=True)
@@ -176,10 +161,12 @@ class Room(Base):
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow)
 
     name = Column(String, nullable=False, default='')
-    type = Column(Enum('main', 'direct', 'game', name='room_type'), nullable=False)
+    type = Column(Enum('main', 'direct', 'game',
+                       name='room_type'), nullable=False)
     is_default = Column(Boolean, nullable=False, default=False)
 
     users_max = Column(Integer, nullable=False, default=0)
@@ -312,7 +299,8 @@ class Automatch(Base):
     min_rating = Column(Float, nullable=False)
     max_rating = Column(Float, nullable=False)
 
-    __table_args__ = (CheckConstraint('min_rating <= max_rating', name='rating_check'),)
+    __table_args__ = (CheckConstraint(
+        'min_rating <= max_rating', name='rating_check'),)
 
 
 class BoardData(TypeDecorator):
@@ -331,7 +319,8 @@ class Game(Base):
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow)
 
     room_id = Column(ForeignKey('rooms.id'), nullable=False)
     room = relationship('Room', back_populates='game')
@@ -343,7 +332,8 @@ class Game(Base):
     is_correspondence = Column(Boolean, nullable=False, default=False)
     is_private = Column(Boolean, nullable=False, default=False)
 
-    stage = Column(Enum('playing', 'counting', 'finished', name='game_stage'), nullable=False)
+    stage = Column(Enum('playing', 'counting', 'finished',
+                        name='game_stage'), nullable=False)
     title = Column(String, nullable=False, default='')
 
     board = deferred(Column(BoardData, nullable=False))
@@ -399,7 +389,8 @@ class Game(Base):
         elif self.result.lower().startswith('w+'):
             return self.white_user, self.black_user
         else:
-            raise ValueError('could not determine winner and loser from game result: {}'.format(self.result))
+            raise ValueError(
+                'could not determine winner and loser from game result: {}'.format(self.result))
 
     @staticmethod
     def count_wins(db, user):
@@ -470,7 +461,8 @@ class Timing(Base):
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow)
 
     game_id = Column(ForeignKey('games.id'), nullable=False)
     game = relationship('Game', back_populates='timing')
@@ -528,7 +520,8 @@ class Challenge(Base):
     id = Column(Integer, primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow,
+                        onupdate=datetime.utcnow)
 
     expire_at = Column(DateTime, nullable=False)
 

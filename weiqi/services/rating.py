@@ -1,19 +1,3 @@
-# weiqi.gs
-# Copyright (C) 2016 Michael Bitzi
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from datetime import datetime
 
 from sqlalchemy.orm import undefer
@@ -63,10 +47,12 @@ class RatingService(BaseService):
         self._apply_rating_periods(winner)
         self._apply_rating_periods(loser)
 
-        winner.rating_data.add_result(self._rating_to_result(loser.rating_data, -winner_hc, WIN))
+        winner.rating_data.add_result(
+            self._rating_to_result(loser.rating_data, -winner_hc, WIN))
         winner.apply_rating_data_change()
 
-        loser.rating_data.add_result(self._rating_to_result(winner.rating_data, winner_hc, LOSS))
+        loser.rating_data.add_result(self._rating_to_result(
+            winner.rating_data, winner_hc, LOSS))
         loser.apply_rating_data_change()
 
         # Recalculate rating data of this period to get the current rating, but keep all results intact as
@@ -88,8 +74,10 @@ class RatingService(BaseService):
         if not user.last_rating_update_at:
             periods = 1
         else:
-            total = (datetime.utcnow() - user.last_rating_update_at).total_seconds()
-            periods = int(total / settings.RATING_PERIOD_DURATION.total_seconds())
+            total = (datetime.utcnow() -
+                     user.last_rating_update_at).total_seconds()
+            periods = int(
+                total / settings.RATING_PERIOD_DURATION.total_seconds())
 
         if periods > 0:
             for _ in range(periods):

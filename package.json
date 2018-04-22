@@ -1,19 +1,19 @@
 {
-  "name": "weiqi.gs",
+  "name": "TeaHouse",
   "version": "0.0.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/mibitzi/weiqi.gs.git"
+    "url": "git+https://github.com/Seth-Rothschild/TeaHouse.git"
   },
   "author": "",
   "license": "AGPL",
   "bugs": {
-    "url": "https://gitlab.com/mibitzi/weiqi.gs/issues"
+    "url": "https://github.com/Seth-Rothschild/TeaHouse/issues"
   },
-  "homepage": "https://gitlab.com/mibitzi/weiqi.gs#readme",
+  "homepage": "https://github.com/Seth-Rothschild/TeaHouse#readme",
   "devDependencies": {
     "babel-core": "^6.7.2",
     "babel-loader": "^6.2.4",

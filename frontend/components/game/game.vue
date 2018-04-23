@@ -240,6 +240,9 @@
 
             can_edit_board() {
                 var has_control = this.has_control;
+		if(this.game.stage == 'counting') {
+		    return 'x' || 'o';
+		}
                 var is_current = is_current_player(this.game, this.current_node_id, this.user.user_id);
 
                 return has_control || is_current;

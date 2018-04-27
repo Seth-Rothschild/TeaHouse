@@ -235,7 +235,7 @@
             },
 
             coordinates() {
-                return !this.is_player || this.game.stage == 'finished';
+                return !this.is_player || this.game.stage == 'finished' || this.game.stage != 'finished';
             },
 
             can_edit_board() {
@@ -269,13 +269,13 @@
 
                 var node = this.game.board.tree[node_id];
 
-                if(node.move < 0) {
-                    play_sound('beep');
-                } else if(node.action == 'B') {
-                    play_sound('black_stone');
-                } else if(node.action == 'W') {
-                    play_sound('white_stone');
-                }
+                // if(node.move < 0) {
+                //     play_sound('beep');
+                // } else if(node.action == 'B') {
+                //     play_sound('black_stone');
+                // } else if(node.action == 'W') {
+                //     play_sound('white_stone');
+                // }
             },
 
             'game_has_update[game_id]': function() {
@@ -346,7 +346,7 @@
                     } else if(starting) {
                         for(var i=0; i<this.seconds_to_start; i++) {
                             setTimeout(function () {
-                                play_sound('beep');
+                                // play_sound('beep');
                             }, 1000 * i);
                         }
                     }
